@@ -1,7 +1,7 @@
 from pydantic import BaseModel, Field
 
-from acteventick.options.clock import ClockOptions
-from acteventick.options.debug import DebugOptions
+from acteventtick.options.clock import ClockOptions
+from acteventtick.options.debug import DebugOptions
 
 
 class Options(BaseModel):

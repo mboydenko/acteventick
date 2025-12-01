@@ -2,8 +2,8 @@ from typing import Type
 
 from pydantic import BaseModel, Field
 
-from acteventick.actions.action import Action
-from acteventick.events.event import Event
+from acteventtick.actions.action import Action
+from acteventtick.events.event import Event
 
 
 class DebugOptions(BaseModel):

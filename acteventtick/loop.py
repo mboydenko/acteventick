@@ -2,17 +2,17 @@ import time
 from typing import Callable, Type
 from loguru import logger
 
-from acteventick import Action
-from acteventick.events.event import Event
-from acteventick.events.event_dispatcher import EventDispatcher
-from acteventick.actions.action_handler import ActionHandler
-from acteventick.options import Options
-from acteventick.tick_event import TickEvent
-from acteventick.actions.action_dispatcher import ActionDispatcher
+from acteventtick import Action
+from acteventtick.events.event import Event
+from acteventtick.events.event_dispatcher import EventDispatcher
+from acteventtick.actions.action_handler import ActionHandler
+from acteventtick.options import Options
+from acteventtick.tick_event import TickEvent
+from acteventtick.actions.action_dispatcher import ActionDispatcher
 
 
 def _deb_tick_duration(func):
-    def tick_duration(self: "ActEvenTickLoop", *args, **kwargs):
+    def tick_duration(self: "ActEventTickLoop", *args, **kwargs):
         if not self._options.debug.tick_duration:
             return func(self, *args, **kwargs)
 
@@ -25,7 +25,7 @@ def _deb_tick_duration(func):
         return result
     return tick_duration
 
-class ActEvenTickLoop:
+class ActEventTickLoop:
 
     def __init__(self, options: Options):
         self._action_dispatcher = ActionDispatcher(debug_options=options.debug)
