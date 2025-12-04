@@ -38,23 +38,27 @@ class ActionDispatcher:
         self._handlers: dict[Type[Action], list[ActionHandler]] = {}
 
     def register(self, action_type: Type[Action], handler: ActionHandler):
-        if self._handlers.get(action_type) is None:
-            self._handlers[action_type] = []
-        self._handlers[action_type].append(handler)
+        self._handlers.setdefault(action_type, []).append(handler)
 
-    def unregister(self, action: Type[Action], handler: ActionHandler):
-        if self._handlers.get(action) is None:
+    def unregister(self, action_type: Type[Action], handler: ActionHandler):
+        handlers = self._handlers.get(action_type)
+        if not handlers:
             return
-        self._handlers[action].remove(handler)
-        if len(self._handlers[action]) == 0:
-            del self._handlers[action]
+        try:
+            handlers.remove(handler)
+        except ValueError:
+            return
+        if not handlers:
+            del self._handlers[action_type]
 
     def push(self, action: Action) -> None:
-        self._queue.put(action)
+            self._queue.put(action)
 
     def dispatch(self) -> None:
-        while not self._queue.empty():
-            action = self._queue.get()
+        actions_queue = self._queue
+        self._queue = Queue()
+        while not actions_queue.empty():
+            action = actions_queue.get()
             handlers = self._handlers.get(type(action), [])
             for handler in handlers:
                 self._exec_handler(action, handler)
